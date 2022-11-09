@@ -8,8 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Divider } from "@mui/material";
-
+import { CardMedia, Divider } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -29,7 +28,7 @@ function Copyright(props: any) {
   );
 }
 
-declare module '*.svg' {
+declare module "*.svg" {
   export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
   const src: string;
 }
@@ -65,10 +64,9 @@ export default function SignIn() {
           marginTop: 25,
           boxShadow: 5,
           mx: "auto",
-          marginBottom: 20
+          marginBottom: 20,
         }}
       >
-       
         <Box
           sx={{
             marginTop: 8,
@@ -77,8 +75,7 @@ export default function SignIn() {
             alignItems: "center",
             borderRadius: "20px",
             mx: "auto",
-            mb: 2
-          
+            mb: 2,
           }}
         >
           <Typography component="h1" variant="h5" sx={{ color: "#000", mt: 2 }}>
@@ -89,7 +86,6 @@ export default function SignIn() {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
-            
           >
             <TextField
               margin="normal"
@@ -100,7 +96,6 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
-              
             />
             <TextField
               margin="normal"
@@ -113,23 +108,39 @@ export default function SignIn() {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" sx={{color: "gray"}} />}
+              sx={{ display: "block" }}
+              control={
+                <Checkbox
+                  value="remember"
+                  color="primary"
+                  sx={{ color: "gray" }}
+                />
+              }
               label="Recordar contraseña"
             />
-            <Button
-              type="submit"
-              variant="contained"
+            <Box
+              component="div"
               sx={{
-                mt: 2,
-                mb: 1,
-                color: "white",
-                backgroundColor: "#000",
-                width: "1/4",
                 display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Iniciar sesion
-            </Button>
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  mb: 1,
+                  color: "white",
+                  backgroundColor: "#000",
+                  textTransform: "capitalize"
+                }}
+              >
+                Iniciar sesion
+              </Button>
+            </Box>
             <Grid container>
               <Grid item xs>
                 <Link
@@ -161,35 +172,61 @@ export default function SignIn() {
           </Box>
         </Box>
         <Divider sx={{ color: "#000", mt: 2 }}>OR</Divider>
-        <Box sx={{py: 1}}>
-        <Button
-          sx={{
-            backgroundColor: "#000",
-            color: "white",
-            "&:hover": { backgroundColor: "#00A6CB" },
-            display: "flex",
-            width: "75%",
-            ml: 10,
-            mt: 1,
-            mb: 2,
-          }}
-        >
-          Inicia sesion con Google
-        </Button>
-        <Button
-          sx={{
-            backgroundColor: "#000",
-            color: "white",
-            "&:hover": { backgroundColor: "#00A6CB" },
-            display: "flex",
-            width: "75%",
-            ml: 10,
-            mt: 1,
-            marginBottom: 5,
-          }}
-        >
-          Inicia sesion con Apple 
-        </Button>
+        <Box sx={{ py: 1 }}>
+          <Button
+            sx={{
+              backgroundColor: "#000",
+              color: "white",
+              "&:hover": { backgroundColor: "#00A6CB" },
+              display: "flex",
+              width: "75%",
+              ml: 10,
+              mt: 1,
+              mb: 2,
+              textTransform: "capitalize",
+            }}
+          >
+            <CardMedia
+              component="img"
+              image="/google.svg"
+              sx={{
+                width: "22px",
+                position: "absolute",
+                top: "22%",
+                right: "0%",
+                left: "8%",
+                bottom: "0%",
+              }}
+            />
+            Continuar con Google
+          </Button>
+          <Button
+            sx={{
+              backgroundColor: "#000",
+              color: "white",
+              "&:hover": { backgroundColor: "#00A6CB" },
+              display: "flex",
+              width: "75%",
+              ml: 10,
+              mt: 1,
+              marginBottom: 5,
+              textTransform: "capitalize",
+            }}
+          >
+            <CardMedia
+              component="img"
+              image="/apple_icon.svg"
+              sx={{
+                width: "22px",
+                position: "absolute",
+                top: "8%",
+                right: "0%",
+                left: "8%",
+                bottom: "0%",
+              }}
+            />
+            Continuar con Apple
+          </Button>
         </Box>
         {/* <Copyright sx={{ mt: 8 }} /> */}
       </Container>
