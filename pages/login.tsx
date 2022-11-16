@@ -1,3 +1,4 @@
+import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,24 +10,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CardMedia, Divider } from "@mui/material";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://epop.com.ar">
-        EPOP
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { RootState } from "../src/store";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { loginWithGoogleThunk } from "../src/store/slices/firebase";
+import { useAppDispatch } from "../src/store/index";
 
 declare module "*.svg" {
   export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -44,14 +32,35 @@ theme.typography.h5 = {
 };
 
 export default function SignIn() {
+  const user = useSelector((state: RootState) => state.firebaseSlice.user);
+  const token = useSelector((state: RootState) => state.firebaseSlice.token);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    console.log("handle submit in development");
   };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      dispatch(loginWithGoogleThunk());
+    } catch (error) {
+      router.push("/login");
+    }
+  };
+
+  const redirect = (path: string) => {
+    router.push(`/${path}`);
+  };
+
+  React.useEffect(() => {
+    if (token !== null) {
+      redirect("home");
+    }
+    if (token === null) {
+      redirect("login");
+    }
+  }, [token]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -135,7 +144,7 @@ export default function SignIn() {
                   mb: 1,
                   color: "white",
                   backgroundColor: "#000",
-                  textTransform: "capitalize"
+                  textTransform: "capitalize",
                 }}
               >
                 Iniciar sesion
@@ -174,6 +183,7 @@ export default function SignIn() {
         <Divider sx={{ color: "#000", mt: 2 }}>OR</Divider>
         <Box sx={{ py: 1 }}>
           <Button
+            onClick={handleGoogleSignIn}
             sx={{
               backgroundColor: "#000",
               color: "white",
