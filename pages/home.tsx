@@ -14,6 +14,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CardMedia } from "@mui/material";
 import ButtonAppBar from "../components/AppBar";
+import { useSelector } from "react-redux";
+import { RootState } from "../src/store";
+import { useRouter } from "next/router";
 
 function Copyright(props: any) {
   return (
@@ -36,6 +39,22 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function Home() {
+  const token = useSelector((state: RootState) => state.firebaseSlice.token);
+  const router = useRouter();
+
+  const redirect = (path: string) => {
+    router.push(`/${path}`);
+  };
+
+  React.useEffect(() => {
+    if (token !== null) {
+      redirect("home");
+    }
+    if (token === null) {
+      redirect("login");
+    }
+  }, [token]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
