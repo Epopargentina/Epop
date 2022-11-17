@@ -71,7 +71,7 @@ export default function SignIn() {
           backgroundColor: "white",
           borderRadius: "16px",
           marginTop: 25,
-          boxShadow: 5,
+          boxShadow: 1,
           mx: "auto",
           marginBottom: 20,
         }}
@@ -180,8 +180,19 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Divider sx={{ color: "#000", mt: 2 }}>OR</Divider>
-        <Box sx={{ py: 1 }}>
+        <Divider
+          sx={{
+            color: "#000",
+            mt: 2,
+          }}
+        ></Divider>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Button
             onClick={handleGoogleSignIn}
             sx={{
@@ -190,10 +201,8 @@ export default function SignIn() {
               "&:hover": { backgroundColor: "#00A6CB" },
               display: "flex",
               width: "75%",
-              ml: 10,
-              mt: 1,
-              mb: 2,
               textTransform: "capitalize",
+              margin: "20px",
             }}
           >
             <CardMedia
@@ -210,35 +219,8 @@ export default function SignIn() {
             />
             Continuar con Google
           </Button>
-          <Button
-            sx={{
-              backgroundColor: "#000",
-              color: "white",
-              "&:hover": { backgroundColor: "#00A6CB" },
-              display: "flex",
-              width: "75%",
-              ml: 10,
-              mt: 1,
-              marginBottom: 5,
-              textTransform: "capitalize",
-            }}
-          >
-            <CardMedia
-              component="img"
-              image="/apple_icon.svg"
-              sx={{
-                width: "22px",
-                position: "absolute",
-                top: "8%",
-                right: "0%",
-                left: "8%",
-                bottom: "0%",
-              }}
-            />
-            Continuar con Apple
-          </Button>
         </Box>
-        {/* <Copyright sx={{ mt: 8 }} /> */}
+        <Box sx={{ py: 1 }}></Box>
       </Container>
     </ThemeProvider>
   );

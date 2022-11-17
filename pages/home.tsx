@@ -1,46 +1,16 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import React from "react";
+import { Button, CardMedia, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CardMedia } from "@mui/material";
-import ButtonAppBar from "../components/AppBar";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "../src/store";
-import { useRouter } from "next/router";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
+import SimpleBottomNavigation from "../components/AppBar";
 
 export default function Home() {
   const token = useSelector((state: RootState) => state.firebaseSlice.token);
+  const user = useSelector((state: RootState) => state.firebaseSlice.user);
   const router = useRouter();
+  const photoURL = user?.photoURL;
 
   const redirect = (path: string) => {
     router.push(`/${path}`);
@@ -55,108 +25,60 @@ export default function Home() {
     }
   }, [token]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   return (
-    <ThemeProvider theme={theme}>
-      <ButtonAppBar />
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
+    <Box component="div">
+      <img
+        src={`${photoURL}`}
+        style={{ maxHeight: "40vh", width: "100%", objectFit: "cover" }}
+        alt="profile_photo"
+      ></img>
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Typography
+          component="p"
           sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            fontFamily: "Mulish",
+            fontWeight: 600,
+            fontSize: "32px",
+            margin: "20px",
           }}
         >
-          <Avatar sx={{ bgcolor: "transparent", p: 8, m: 4 }}>
-            <CardMedia
-              component="img"
-              image="/default-avatar.svg"
-              sx={{ width: "150px", height: 150 }}
-            />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Nombre de prueba
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              mt: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              component="h4"
-              sx={{ fontFamily: "revert", color: "grey" }}
-            >
-              <strong>Link epop</strong>
-              <Button>
-                <CardMedia
-                  component="img"
-                  image="/pencil.svg"
-                  sx={{ width: "24px", height: "24px" }}
-                />
-              </Button>
-            </Typography>
+          <b>{user?.displayName}</b>
+        </Typography>
 
-            <Typography component="h4" sx={{ fontFamily: "revert" }}>
-              <strong>Editar biografia</strong>
-              <Button>
-                <CardMedia
-                  component="img"
-                  image="/pencil.svg"
-                  sx={{ width: "24px", height: "24px" }}
-                />
-              </Button>
-            </Typography>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Directo"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox value="remember" color="primary" defaultChecked />
-              }
-              label="Cuenta privada"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Pin de seguridad
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+        <Typography
+          component="p"
+          sx={{
+            fontFamily: "Mulish",
+            fontWeight: 600,
+            fontSize: "22px",
+            color: "grey",
+            marginBottom: "20px",
+          }}
+        >
+          Biografia?
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "black",
+            width: "320px",
+            height: "42px",
+            borderRadius: "16px",
+            "&:hover": { backgroundColor: "black" },
+          }}
+        >
+          Editar perfil
+        </Button>
+      </Box>
+      <SimpleBottomNavigation image={photoURL} />
+    </Box>
   );
 }
