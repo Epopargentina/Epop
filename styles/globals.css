@@ -23,3 +23,23 @@ a {
     background: white;
   }
 }
+
+.css-h4y409-MuiList-root {
+  max-height: 400px;
+}
+
+.input-drawer {
+  background-color: lightgray;
+  border-radius: 12px;
+  margin: 5px;
+  border: none;
+  padding: 12px;
+  width: 40%;
+}
+
+.image-links {
+  width: 22px;
+  height: 22px;
+  display: inline;
+  border-radius: 8px;
+}

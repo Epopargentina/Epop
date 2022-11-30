@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CardMedia, Divider } from "@mui/material";
+import { CardMedia, CircularProgress, Divider } from "@mui/material";
 import { RootState } from "../src/store";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -34,6 +34,7 @@ theme.typography.h5 = {
 export default function SignIn() {
   const user = useSelector((state: RootState) => state.firebaseSlice.user);
   const token = useSelector((state: RootState) => state.firebaseSlice.token);
+  const [loading, setLoading] = React.useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -43,11 +44,15 @@ export default function SignIn() {
 
   const handleGoogleSignIn = async () => {
     try {
+      setLoading(true);
       dispatch(loginWithGoogleThunk());
     } catch (error) {
       router.push("/login");
+      console.log(error);
     }
   };
+
+  React.useEffect(() => {}, [loading]);
 
   const redirect = (path: string) => {
     router.push(`/${path}`);
@@ -55,6 +60,7 @@ export default function SignIn() {
 
   React.useEffect(() => {
     if (token !== null) {
+      localStorage.setItem("token", token);
       redirect("home");
     }
     if (token === null) {
@@ -62,166 +68,192 @@ export default function SignIn() {
     }
   }, [token]);
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Container
-        component="main"
-        maxWidth="sm"
+  if (loading) {
+    return (
+      <Box
+        component="div"
         sx={{
-          backgroundColor: "white",
-          borderRadius: "16px",
-          marginTop: 25,
-          boxShadow: 1,
-          mx: "auto",
-          marginBottom: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
         }}
       >
-        <Box
+        <CircularProgress />
+      </Box>
+    );
+  }
+  return (
+    <ThemeProvider theme={theme}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Container
+          component="main"
+          maxWidth="sm"
           sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            borderRadius: "20px",
-            mx: "auto",
-            mb: 2,
+            backgroundColor: "#EEEEEE",
+            borderRadius: "16px",
+            overflowY: "hidden",
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ color: "#000", mt: 2 }}>
-            Iniciar sesion
-          </Typography>
           <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Tu usuario"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Contraseña"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              sx={{ display: "block" }}
-              control={
-                <Checkbox
-                  value="remember"
-                  color="primary"
-                  sx={{ color: "gray" }}
-                />
-              }
-              label="Recordar contraseña"
-            />
-            <Box
-              component="div"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                sx={{
-                  mt: 2,
-                  mb: 1,
-                  color: "white",
-                  backgroundColor: "#000",
-                  textTransform: "capitalize",
-                }}
-              >
-                Iniciar sesion
-              </Button>
-            </Box>
-            <Grid container>
-              <Grid item xs>
-                <Link
-                  href="#"
-                  variant="body2"
-                  sx={{
-                    textDecoration: "none",
-                    color: "#000",
-                    "&:hover": { color: "#00A6CB" },
-                  }}
-                >
-                  Olvidaste tu contraseña?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link
-                  href="#"
-                  variant="body2"
-                  sx={{
-                    textDecoration: "none",
-                    color: "#000",
-                    "&:hover": { color: "#00A6CB" },
-                  }}
-                >
-                  {"No tienes una cuenta? Registrate"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Divider
-          sx={{
-            color: "#000",
-            mt: 2,
-          }}
-        ></Divider>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Button
-            onClick={handleGoogleSignIn}
             sx={{
-              backgroundColor: "#000",
-              color: "white",
-              "&:hover": { backgroundColor: "#00A6CB" },
+              marginTop: 8,
               display: "flex",
-              width: "75%",
-              textTransform: "capitalize",
-              margin: "20px",
+              flexDirection: "column",
+              alignItems: "center",
+              borderRadius: "20px",
+              mx: "auto",
+              mb: 2,
             }}
           >
-            <CardMedia
-              component="img"
-              image="/google.svg"
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{ color: "#000", padding: "24px", fontFamily: "Mulish" }}
+            >
+              Iniciar sesion
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Tu usuario"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Contraseña"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                sx={{ display: "block" }}
+                control={
+                  <Checkbox
+                    value="remember"
+                    color="primary"
+                    sx={{ color: "gray" }}
+                  />
+                }
+                label="Recordar contraseña"
+              />
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  disabled
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    mb: 1,
+                    color: "white",
+                    backgroundColor: "#000",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  Iniciar sesion
+                </Button>
+              </Box>
+              <Grid container>
+                <Grid item xs>
+                  <Link
+                    href="#"
+                    variant="body2"
+                    sx={{
+                      textDecoration: "none",
+                      color: "#000",
+                      "&:hover": { color: "#00A6CB" },
+                    }}
+                  >
+                    Olvidaste tu contraseña?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link
+                    href="#"
+                    variant="body2"
+                    sx={{
+                      textDecoration: "none",
+                      color: "#000",
+                      "&:hover": { color: "#00A6CB" },
+                    }}
+                  >
+                    {"No tienes una cuenta? Registrate"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+          <Divider
+            sx={{
+              color: "#000",
+              mt: 2,
+            }}
+          ></Divider>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              onClick={handleGoogleSignIn}
               sx={{
-                width: "22px",
-                position: "absolute",
-                top: "22%",
-                right: "0%",
-                left: "8%",
-                bottom: "0%",
+                backgroundColor: "#000",
+                color: "white",
+                "&:hover": { backgroundColor: "#00A6CB" },
+                display: "flex",
+                width: "75%",
+                textTransform: "capitalize",
+                margin: "20px",
               }}
-            />
-            Continuar con Google
-          </Button>
-        </Box>
-        <Box sx={{ py: 1 }}></Box>
-      </Container>
+            >
+              <CardMedia
+                component="img"
+                image="/google.svg"
+                sx={{
+                  width: "22px",
+                  position: "absolute",
+                  top: "22%",
+                  right: "0%",
+                  left: "8%",
+                  bottom: "0%",
+                }}
+              />
+              Continuar con Google
+            </Button>
+          </Box>
+          <Box sx={{ py: 1 }}></Box>
+        </Container>
+      </div>
     </ThemeProvider>
   );
 }

@@ -5,25 +5,51 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "../src/store";
 import SimpleBottomNavigation from "../components/AppBar";
+import TemporaryDrawer from "./ui/drawer";
 
 export default function Home() {
   const token = useSelector((state: RootState) => state.firebaseSlice.token);
   const user = useSelector((state: RootState) => state.firebaseSlice.user);
   const router = useRouter();
-  const photoURL = user?.photoURL;
+  const [state, setState] = React.useState({
+    bottom: false,
+  });
+  const photoURL = user?.user_image;
+  const biography = user?.user_biography;
 
-  const redirect = (path: string) => {
-    router.push(`/${path}`);
-  };
+  const toggleDrawer =
+    (anchor: string, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setState({ ...state, [anchor]: open });
+    };
 
   React.useEffect(() => {
-    if (token !== null) {
-      redirect("home");
+    localStorage.setItem("accesToken", token);
+  }, []);
+
+  React.useEffect(() => {
+    const accesToken = localStorage.getItem("accesToken");
+    if (accesToken === null) {
+      router.push("/login");
     }
-    if (token === null) {
-      redirect("login");
-    }
-  }, [token]);
+  }, []);
+
+  // React.useEffect(() => {
+  //   if (token) {
+  //     router.push("/home");
+  //   }
+  //   if (token === null) {
+  //     router.push("/login");
+  //   }
+  // }, [token]);
 
   return (
     <Box component="div">
@@ -31,7 +57,7 @@ export default function Home() {
         src={`${photoURL}`}
         style={{ maxHeight: "40vh", width: "100%", objectFit: "cover" }}
         alt="profile_photo"
-      ></img>
+      />
       <Box
         component="div"
         sx={{
@@ -50,7 +76,7 @@ export default function Home() {
             margin: "20px",
           }}
         >
-          <b>{user?.displayName}</b>
+          <b>{user?.user_name}</b>
         </Typography>
 
         <Typography
@@ -63,9 +89,10 @@ export default function Home() {
             marginBottom: "20px",
           }}
         >
-          Biografia?
+          {user ? user.user_biography : ""}
         </Typography>
         <Button
+          onClick={toggleDrawer("bottom", true)}
           variant="contained"
           sx={{
             backgroundColor: "black",
@@ -78,7 +105,13 @@ export default function Home() {
           Editar perfil
         </Button>
       </Box>
-      <SimpleBottomNavigation image={photoURL} />
+      <TemporaryDrawer
+        key={token}
+        state={state}
+        setState={setState}
+        photo={user?.user_image}
+      />
+      <SimpleBottomNavigation image={user?.user_image} />
     </Box>
   );
 }

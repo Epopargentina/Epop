@@ -1,14 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { auth, googleAuthProvider } from "../../../config/firebase";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-  signInWithPopup,
-  sendPasswordResetEmail,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { auth } from "../../../config/firebase";
+import { signOut, sendPasswordResetEmail } from "firebase/auth";
 
 export interface CounterState {
   user: any;
@@ -30,7 +23,7 @@ export const firebaseSlice = createSlice({
   initialState,
   reducers: {
     loginWithGoogle: (state, action: PayloadAction<any>) => {
-      state.user = action.payload.user;
+      state.user = action.payload.data;
       state.token = action.payload.token;
     },
 
@@ -43,10 +36,13 @@ export const firebaseSlice = createSlice({
     recoverPassword: (state, action: PayloadAction<string>) => {
       sendPasswordResetEmail(auth, action.payload);
     },
+    updateUser: (state, action: PayloadAction<any>) => {
+      state.user = action.payload.updatedUser;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loginWithGoogle, logOut } = firebaseSlice.actions;
+export const { loginWithGoogle, logOut, updateUser } = firebaseSlice.actions;
 
 export default firebaseSlice;

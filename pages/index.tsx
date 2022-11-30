@@ -11,18 +11,15 @@ export default function Home() {
 
   const token = useSelector((state: RootState) => state.firebaseSlice.token);
 
-  const redirect = (path: string) => {
-    router.push(`/${path}`);
-  };
-
   React.useEffect(() => {
-    if (token !== null) {
-      redirect("home");
+    if (token) {
+      router.push("/home");
     }
     if (token === null) {
-      redirect("login");
+      router.push("/login");
     }
   }, [token]);
+
   return (
     <div className={styles.container}>
       <Head>
