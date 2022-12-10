@@ -6,16 +6,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "../src/store";
 import SimpleBottomNavigation from "../components/AppBar";
 import TemporaryDrawer from "./ui/drawer";
+import { useAppDispatch } from "../src/store/index";
+import { dataOfUser } from "../src/store/slices/firebase";
 
 export default function Home() {
   const token = useSelector((state: RootState) => state.firebaseSlice.token);
   const user = useSelector((state: RootState) => state.firebaseSlice.user);
+  const links = user?.links;
   const router = useRouter();
-  const [state, setState] = React.useState({
-    bottom: false,
-  });
+  const [state, setState] = React.useState({ bottom: false });
   const photoURL = user?.user_image;
   const biography = user?.user_biography;
+  const dispatch = useAppDispatch();
 
   const toggleDrawer =
     (anchor: string, open: boolean) =>
@@ -32,32 +34,32 @@ export default function Home() {
     };
 
   React.useEffect(() => {
-    localStorage.setItem("accesToken", token);
-  }, []);
-
-  React.useEffect(() => {
-    const accesToken = localStorage.getItem("accesToken");
-    if (accesToken === null) {
-      router.push("/login");
+    if (token) {
+      localStorage.setItem("accessToken", token);
     }
   }, []);
 
-  // React.useEffect(() => {
-  //   if (token) {
-  //     router.push("/home");
-  //   }
-  //   if (token === null) {
-  //     router.push("/login");
-  //   }
-  // }, [token]);
+  React.useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user]);
 
   return (
     <Box component="div">
-      <img
-        src={`${photoURL}`}
-        style={{ maxHeight: "40vh", width: "100%", objectFit: "cover" }}
-        alt="profile_photo"
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src={`${photoURL}`}
+          style={{ maxHeight: "40vh", width: "50%", objectFit: "cover" }}
+          alt="profile_photo"
+        />
+      </div>
       <Box
         component="div"
         sx={{
@@ -100,10 +102,52 @@ export default function Home() {
             height: "42px",
             borderRadius: "16px",
             "&:hover": { backgroundColor: "black" },
+            marginBottom: "40px",
           }}
         >
           Editar perfil
         </Button>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            maxWidth: "100%",
+            alignItems: "baseline",
+            justifyContent: "center",
+          }}
+        >
+          {Array.isArray(links) &&
+            links.map((item: any) => (
+              <div
+                style={{
+                  margin: "5px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={item.link_logo}
+                  sx={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "10px",
+                  }}
+                />
+                <label
+                  style={{
+                    width: "100px",
+                    fontFamily: "Mulish",
+                    fontSize: "12px",
+                  }}
+                >
+                  {item.link_name}
+                </label>
+              </div>
+            ))}
+        </div>
       </Box>
       <TemporaryDrawer
         key={token}

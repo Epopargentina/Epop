@@ -1,4 +1,4 @@
-import { loginWithGoogle, updateUser } from "./firebaseSlice";
+import { dataUser, loginWithGoogle, updateUser } from "./firebaseSlice";
 import { auth, googleAuthProvider } from "../../../config/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import axios from "axios";
@@ -36,5 +36,50 @@ export const updateProfile = (token: string, data: any) => {
     });
     updatedUser = updatedUser.data;
     dispatch(updateUser({ updatedUser }));
+  };
+};
+
+export const dataOfUser = (token: string) => {
+  return async (dispatch: any) => {
+    try {
+      let { data } = await axios.post(
+        "http://localhost:3001/auth/register",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      data = data.data;
+      dispatch(dataUser(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const postLink = (token: string, linkData: any) => {
+  return async (dispatch: any) => {
+    try {
+      let postLink = await axios.post("http://localhost:3001/links", linkData, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      let { data } = await axios.post(
+        "http://localhost:3001/auth/register",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      data = data.data;
+      dispatch(dataUser(data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

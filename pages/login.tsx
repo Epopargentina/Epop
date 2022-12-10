@@ -13,8 +13,10 @@ import { CardMedia, CircularProgress, Divider } from "@mui/material";
 import { RootState } from "../src/store";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { loginWithGoogleThunk } from "../src/store/slices/firebase";
+import { dataOfUser, loginWithGoogleThunk } from "../src/store/slices/firebase";
 import { useAppDispatch } from "../src/store/index";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../src/config/firebase";
 
 declare module "*.svg" {
   export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -54,19 +56,30 @@ export default function SignIn() {
 
   React.useEffect(() => {}, [loading]);
 
-  const redirect = (path: string) => {
-    router.push(`/${path}`);
-  };
+  React.useEffect(() => {
+    onAuthStateChanged(auth, function (user: any) {
+      if (user) {
+        localStorage.setItem(
+          "accessToken",
+          user["stsTokenManager"]["accessToken"]
+        );
+      } else {
+        setLoading(false);
+        router.push("/login");
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
-    if (token !== null) {
-      localStorage.setItem("token", token);
-      redirect("home");
+    if (user) {
+      router.push("/home");
     }
-    if (token === null) {
-      redirect("login");
+    const accessToken = localStorage.getItem("accessToken");
+    if (!user && accessToken) {
+      setLoading(true);
+      dispatch(dataOfUser(accessToken));
     }
-  }, [token]);
+  }, [user]);
 
   if (loading) {
     return (

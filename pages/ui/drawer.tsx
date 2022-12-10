@@ -9,6 +9,7 @@ import { RootState } from "../../src/store";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "../../src/store/index";
 import { updateProfile } from "../../src/store/slices/firebase";
+import BasicModal from "./modalLink";
 
 interface Props {
   setState: any;
@@ -17,8 +18,10 @@ interface Props {
 }
 
 export default function TemporaryDrawer(props: Props) {
+  const [open, setOpen] = React.useState(false);
   const user = useSelector((state: RootState) => state.firebaseSlice.user);
-  const token = useSelector((state: RootState) => state.firebaseSlice.token);
+  // const token = useSelector((state: RootState) => state.firebaseSlice.token);
+  const [token, setToken] = React.useState<any>("");
   const [photo, setPhoto] = React.useState(props.photo);
   const [state, setState] = React.useState({
     bottom: false,
@@ -40,6 +43,10 @@ export default function TemporaryDrawer(props: Props) {
 
       props.setState({ ...state, [anchor]: open });
     };
+
+  React.useEffect(() => {
+    setToken(localStorage.getItem("accessToken"));
+  }, []);
 
   function handleChange(e: any) {
     setInput({
@@ -150,6 +157,7 @@ export default function TemporaryDrawer(props: Props) {
                 {Array.isArray(user?.links) &&
                   user.links.map((link: any) => (
                     <Button
+                      key={link.link_name}
                       sx={{
                         backgroundColor: "lightgrey",
                         borderRadius: "12px",
@@ -163,6 +171,7 @@ export default function TemporaryDrawer(props: Props) {
                     >
                       {" "}
                       <CardMedia
+                        key={link.link_name}
                         component="img"
                         image={link.link_logo}
                         className="image-links"
@@ -177,6 +186,7 @@ export default function TemporaryDrawer(props: Props) {
                   ))}
 
                 <Button
+                  onClick={() => setOpen(true)}
                   sx={{
                     backgroundColor: "lightgrey",
                     borderRadius: "12px",
@@ -207,6 +217,7 @@ export default function TemporaryDrawer(props: Props) {
               >
                 Guardar perfil
               </Button>
+              {open && <BasicModal open={open} setOpen={setOpen} />}
             </List>
           </Box>
         </Drawer>

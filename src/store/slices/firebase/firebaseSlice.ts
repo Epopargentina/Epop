@@ -39,10 +39,14 @@ export const firebaseSlice = createSlice({
     updateUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload.updatedUser;
     },
+    dataUser: (state, action: PayloadAction<any>) => {
+      state.user = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loginWithGoogle, logOut, updateUser } = firebaseSlice.actions;
+export const { loginWithGoogle, logOut, updateUser, dataUser } =
+  firebaseSlice.actions;
 
 export default firebaseSlice;
