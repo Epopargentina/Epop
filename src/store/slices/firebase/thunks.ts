@@ -27,8 +27,9 @@ export const loginWithGoogleThunk = () => {
   };
 };
 
-export const updateProfile = (token: string, data: any) => {
+export const updateProfile = (token: string, data: any, decoded:any) => {
   return async (dispatch: any) => {
+    data.image = decoded
     let updatedUser = await axios.put("http://localhost:3001/user", data, {
       headers: {
         Authorization: "Bearer " + token,

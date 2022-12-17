@@ -29,6 +29,11 @@ export default function TemporaryDrawer(props: Props) {
   const [input, setInput] = React.useState({});
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [previewSource, setPreviewSource] = React.useState<any>("");
+  const [image, setImage] = React.useState({
+    imageName: "",
+    image: "",
+  });
 
   const toggleDrawer =
     (anchor: string, open: boolean) =>
@@ -48,6 +53,26 @@ export default function TemporaryDrawer(props: Props) {
     setToken(localStorage.getItem("accessToken"));
   }, []);
 
+  function handleImage(e: any) {
+    setImage({
+      ...image,
+      imageName: e.target.value,
+      image: e.target.files[0],
+    });
+    previewFile(e.target.files[0]);
+  }
+
+  function previewFile(file: any) {
+    const reader = new FileReader();
+    console.log(image);
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreviewSource(reader.result);
+      };
+    }
+  }
+
   function handleChange(e: any) {
     setInput({
       ...input,
@@ -61,7 +86,7 @@ export default function TemporaryDrawer(props: Props) {
       return alert("Modifica algun campo para modificar");
     }
     try {
-      await dispatch(updateProfile(token, input));
+      await dispatch(updateProfile(token, input, previewSource));
     } catch (error) {
       console.log(error);
     }
@@ -100,24 +125,27 @@ export default function TemporaryDrawer(props: Props) {
                   flexDirection: "column",
                 }}
               >
-                <button
-                  style={{
-                    backgroundImage: `url(${user?.user_image})`,
-                    width: "150px",
-                    height: "150px",
-                    backgroundRepeat: "no-repeat",
-                    borderRadius: "100%",
-                    color: "#FFF",
-                    fontFamily: "Mulish",
-                    fontWeight: 800,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    border: "none",
-                    margin: "5px",
-                  }}
-                >
-                  EDITAR
-                </button>
+                <input
+                  type="file"
+                  name="image"
+                  placeholder="Imagen"
+                  value={image.imageName}
+                  onChange={(e: any) => handleImage(e)}
+                  //   style={{
+                  //     backgroundImage: `url(${user?.user_image})`,
+                  //     width: "150px",
+                  //     height: "150px",
+                  //     backgroundRepeat: "no-repeat",
+                  //     borderRadius: "100%",
+                  //     color: "#FFF",
+                  //     fontFamily: "Mulish",
+                  //     fontWeight: 800,
+                  //     backgroundSize: "cover",
+                  //     backgroundPosition: "center",
+                  //     border: "none",
+                  //     margin: "5px",
+                  //   }}
+                ></input>
 
                 <input
                   onChange={(e: any) => handleChange(e)}
