@@ -1,144 +1,132 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CardMedia, CircularProgress, Divider } from "@mui/material";
-import { RootState } from "../src/store";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import { dataOfUser, loginWithGoogleThunk } from "../src/store/slices/firebase";
-import { useAppDispatch } from "../src/store/index";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../src/config/firebase";
+import React from 'react'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { CardMedia, CircularProgress, Divider } from '@mui/material'
+import { RootState } from '../src/store'
+import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import { dataOfUser, loginWithGoogleThunk } from '../src/store/slices/firebase'
+import { useAppDispatch } from '../src/store/index'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../src/config/firebase'
 
-declare module "*.svg" {
-  export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
-  const src: string;
+declare module '*.svg' {
+  export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>
+  const src: string
 }
 
-const theme = createTheme();
+const theme = createTheme()
 
 theme.typography.h5 = {
-  fontSize: "1.2rem",
-  "@media (min-width:600px)": {
-    fontSize: "1.5rem",
+  fontSize: '1.2rem',
+  '@media (min-width:600px)': {
+    fontSize: '1.5rem',
   },
-  fontWeight: "500",
-};
+  fontWeight: '500',
+}
 
 export default function SignIn() {
-  const user = useSelector((state: RootState) => state.firebaseSlice.user);
-  const token = useSelector((state: RootState) => state.firebaseSlice.token);
-  const [loading, setLoading] = React.useState(false);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  const user = useSelector((state: RootState) => state.firebaseSlice.user)
+  const token = useSelector((state: RootState) => state.firebaseSlice.token)
+  const [loading, setLoading] = React.useState(false)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("handle submit in development");
-  };
+    console.log('handle submit in development')
+  }
 
   const handleGoogleSignIn = async () => {
     try {
-      setLoading(true);
-      dispatch(loginWithGoogleThunk());
+      setLoading(true)
+      dispatch(loginWithGoogleThunk())
     } catch (error) {
-      router.push("/login");
-      console.log(error);
+      router.push('/login')
+      console.log(error)
     }
-  };
+  }
 
-  React.useEffect(() => {}, [loading]);
+  React.useEffect(() => {}, [user])
 
   React.useEffect(() => {
     onAuthStateChanged(auth, function (user: any) {
       if (user) {
-        localStorage.setItem(
-          "accessToken",
-          user["stsTokenManager"]["accessToken"]
-        );
+        sessionStorage.setItem('accessToken', user['stsTokenManager']['accessToken'])
       } else {
-        setLoading(false);
-        router.push("/login");
+        setLoading(false)
+        router.push('/login')
       }
-    });
-  }, []);
+    })
+  }, [])
 
   React.useEffect(() => {
-    if (user) {
-      router.push("/home");
+    if (token) {
+      router.push('/home')
     }
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem('accessToken')
     if (!user && accessToken) {
-      setLoading(true);
-      dispatch(dataOfUser(accessToken));
+      // setLoading(true)
+      dispatch(dataOfUser(accessToken))
     }
-  }, [user]);
+  }, [user])
 
   if (loading) {
     return (
       <Box
         component="div"
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
         }}
       >
         <CircularProgress />
       </Box>
-    );
+    )
   }
   return (
     <ThemeProvider theme={theme}>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
         }}
       >
         <Container
           component="main"
           maxWidth="sm"
           sx={{
-            backgroundColor: "#EEEEEE",
-            borderRadius: "16px",
-            overflowY: "hidden",
+            backgroundColor: '#EEEEEE',
+            borderRadius: '16px',
+            overflowY: 'hidden',
           }}
         >
           <Box
             sx={{
               marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              borderRadius: "20px",
-              mx: "auto",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              borderRadius: '20px',
+              mx: 'auto',
               mb: 2,
             }}
           >
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{ color: "#000", padding: "24px", fontFamily: "Mulish" }}
-            >
+            <Typography component="h1" variant="h5" sx={{ color: '#000', padding: '24px', fontFamily: 'Mulish' }}>
               Iniciar sesion
             </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -160,22 +148,16 @@ export default function SignIn() {
                 autoComplete="current-password"
               />
               <FormControlLabel
-                sx={{ display: "block" }}
-                control={
-                  <Checkbox
-                    value="remember"
-                    color="primary"
-                    sx={{ color: "gray" }}
-                  />
-                }
+                sx={{ display: 'block' }}
+                control={<Checkbox value="remember" color="primary" sx={{ color: 'gray' }} />}
                 label="Recordar contraseña"
               />
               <Box
                 component="div"
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Button
@@ -186,9 +168,9 @@ export default function SignIn() {
                   sx={{
                     mt: 2,
                     mb: 1,
-                    color: "white",
-                    backgroundColor: "#000",
-                    textTransform: "capitalize",
+                    color: 'white',
+                    backgroundColor: '#000',
+                    textTransform: 'capitalize',
                   }}
                 >
                   Iniciar sesion
@@ -200,9 +182,9 @@ export default function SignIn() {
                     href="#"
                     variant="body2"
                     sx={{
-                      textDecoration: "none",
-                      color: "#000",
-                      "&:hover": { color: "#00A6CB" },
+                      textDecoration: 'none',
+                      color: '#000',
+                      '&:hover': { color: '#00A6CB' },
                     }}
                   >
                     Olvidaste tu contraseña?
@@ -213,12 +195,12 @@ export default function SignIn() {
                     href="#"
                     variant="body2"
                     sx={{
-                      textDecoration: "none",
-                      color: "#000",
-                      "&:hover": { color: "#00A6CB" },
+                      textDecoration: 'none',
+                      color: '#000',
+                      '&:hover': { color: '#00A6CB' },
                     }}
                   >
-                    {"No tienes una cuenta? Registrate"}
+                    {'No tienes una cuenta? Registrate'}
                   </Link>
                 </Grid>
               </Grid>
@@ -226,39 +208,39 @@ export default function SignIn() {
           </Box>
           <Divider
             sx={{
-              color: "#000",
+              color: '#000',
               mt: 2,
             }}
           ></Divider>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <Button
               onClick={handleGoogleSignIn}
               sx={{
-                backgroundColor: "#000",
-                color: "white",
-                "&:hover": { backgroundColor: "#00A6CB" },
-                display: "flex",
-                width: "75%",
-                textTransform: "capitalize",
-                margin: "20px",
+                backgroundColor: '#000',
+                color: 'white',
+                '&:hover': { backgroundColor: '#00A6CB' },
+                display: 'flex',
+                width: '75%',
+                textTransform: 'capitalize',
+                margin: '20px',
               }}
             >
               <CardMedia
                 component="img"
                 image="/google.svg"
                 sx={{
-                  width: "22px",
-                  position: "absolute",
-                  top: "22%",
-                  right: "0%",
-                  left: "8%",
-                  bottom: "0%",
+                  width: '22px',
+                  position: 'absolute',
+                  top: '22%',
+                  right: '0%',
+                  left: '8%',
+                  bottom: '0%',
                 }}
               />
               Continuar con Google
@@ -268,5 +250,5 @@ export default function SignIn() {
         </Container>
       </div>
     </ThemeProvider>
-  );
+  )
 }

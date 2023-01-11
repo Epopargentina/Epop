@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
     store.subscribe(() => {
       const token = store.getState().firebaseSlice.token;
       if (token) {
-        window.localStorage.setItem("accessToken", token);
+        window.sessionStorage.setItem("accessToken", token);
       }
     });
   }, []);

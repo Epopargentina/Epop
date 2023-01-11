@@ -60,7 +60,7 @@ export default function BasicModal({ open, setOpen }: Props) {
   });
 
   React.useEffect(() => {
-    setToken(localStorage.getItem("accessToken"));
+    setToken(sessionStorage.getItem("accessToken"));
   }, []);
 
   React.useEffect(() => {
