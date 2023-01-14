@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../src/store'
 import { useAppDispatch } from '../src/store/index'
 import { updateProfile } from '../src/store/slices/firebase'
-import BasicModal from '../pages/ui/modalLink'
+import BasicModal from './modalLink'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 
