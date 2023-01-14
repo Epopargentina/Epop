@@ -11,6 +11,7 @@ import { dataOfUser } from '../src/store/slices/firebase'
 
 import { auth } from '../src/config/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
+import Link from 'next/link'
 
 export default function Home() {
   const token = useSelector((state: RootState) => state.firebaseSlice.token)
@@ -119,38 +120,46 @@ export default function Home() {
           {Array.isArray(links) &&
             links.map((item: any) => (
               <div
-                key={item.link_name}
-                style={{
-                  margin: '5px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                }}
+              key={item.link_name}
+              style={{
+                margin: '5px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+              }}
               >
-                <CardMedia
-                  component="img"
-                  image={item.link_logo}
-                  sx={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '10px',
-                  }}
-                />
-                <label
-                  style={{
-                    width: '100px',
-                    fontFamily: 'Mulish',
-                    fontSize: '12px',
-                  }}
-                >
-                  {item.link_name}
-                </label>
+                <Link href={`https://${item.link_url}`} target={'_blank'}>
+                  <CardMedia
+                    component="img"
+                    image={item.link_logo}
+                    sx={{
+                      width: '80px',
+                      height: '80px',
+                      borderRadius: '10px',
+                    }}
+                  />
+                  <label
+                    style={{
+                      width: '100px',
+                      fontFamily: 'Mulish',
+                      fontSize: '12px',
+                    }}
+                  >
+                    {item.link_name}
+                  </label>
+                </Link>
               </div>
             ))}
         </div>
       </Box>
-      <TemporaryDrawer key={token} state={state} setState={setState} photo={user?.user_image} />
+      <TemporaryDrawer
+        key={token}
+        state={state}
+        setState={setState}
+        photo={user?.user_image}
+        toggleDrawer={toggleDrawer}
+      />
       <SimpleBottomNavigation image={user?.user_image} />
     </Box>
   )

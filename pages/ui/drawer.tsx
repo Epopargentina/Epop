@@ -16,6 +16,7 @@ interface Props {
   setState: any
   state: any
   photo: string
+  toggleDrawer: any
 }
 
 export default function TemporaryDrawer(props: Props) {
@@ -23,9 +24,7 @@ export default function TemporaryDrawer(props: Props) {
   const user = useSelector((state: RootState) => state.firebaseSlice.user)
   const [token, setToken] = React.useState<any>('')
   const [photo, setPhoto] = React.useState(props.photo)
-  const [state, setState] = React.useState({
-    bottom: false,
-  })
+
   const [input, setInput] = React.useState({})
   const dispatch = useAppDispatch()
   const [previewSource, setPreviewSource] = React.useState<any>('')
@@ -34,17 +33,6 @@ export default function TemporaryDrawer(props: Props) {
     user_image: '',
   })
   const [loading, setLoading] = React.useState(false)
-
-  const toggleDrawer = (anchor: string, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return
-    }
-
-    props.setState({ ...state, [anchor]: open })
-  }
 
   React.useEffect(() => {
     setToken(sessionStorage.getItem('accessToken'))
@@ -90,7 +78,8 @@ export default function TemporaryDrawer(props: Props) {
         location.reload()
         setLoading(false)
       }
-      toggleDrawer('bottom', false)
+      setInput({})
+      props.setState({ bottom: false })
     } catch (error) {
       console.log(error)
     }
@@ -104,7 +93,7 @@ export default function TemporaryDrawer(props: Props) {
         <Drawer
           anchor={'bottom'}
           open={props.state['bottom']}
-          onClose={toggleDrawer('bottom', false)}
+          onClose={props.toggleDrawer('bottom', false)}
           sx={{
             borderTopRightRadius: '8px',
             borderTopLeftRadius: '8px',
@@ -145,7 +134,7 @@ export default function TemporaryDrawer(props: Props) {
                     justifyContent: 'center',
                     flexDirection: 'row',
                     gap: '40px',
-                    marginBottom:'10px'
+                    marginBottom: '10px',
                   }}
                 >
                   <label
@@ -160,7 +149,6 @@ export default function TemporaryDrawer(props: Props) {
                       padding: '10px',
                       fontFamily: 'Mulish',
                       height: '45px',
-
                     }}
                   >
                     <EditIcon />
@@ -287,7 +275,7 @@ export default function TemporaryDrawer(props: Props) {
               >
                 Guardar perfil
               </Button>
-              {open && <BasicModal open={open} setOpen={setOpen} />}
+              {open && <BasicModal open={open} setOpen={setOpen} setState={props.setState} />}
             </List>
           </Box>
         </Drawer>

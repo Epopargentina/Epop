@@ -3,6 +3,8 @@ import { auth, googleAuthProvider } from '../../../config/firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import axios from 'axios'
 
+const endpoint = 'https://epop-api.onrender.com'
+
 export const loginWithGoogleThunk = () => {
   return async (dispatch: any) => {
     const result = await signInWithPopup(auth, googleAuthProvider)
@@ -11,7 +13,7 @@ export const loginWithGoogleThunk = () => {
     token = token['accessToken']
     try {
       let { data } = await axios.post(
-        'http://localhost:3001/auth/register',
+        `${endpoint}/auth/register`,
         {},
         {
           headers: {
@@ -32,7 +34,7 @@ export const updateProfile = (token: string, data: any, decoded: any) => {
     if (decoded != '') {
       data.user_image = decoded
     }
-    let updatedUser = await axios.put('http://localhost:3001/user', data, {
+    let updatedUser = await axios.put(`${endpoint}/user`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
       },
@@ -46,7 +48,7 @@ export const dataOfUser = (token: string) => {
   return async (dispatch: any) => {
     try {
       let { data } = await axios.post(
-        'http://localhost:3001/auth/register',
+        `${endpoint}/auth/register`,
         {},
         {
           headers: {
@@ -65,13 +67,13 @@ export const dataOfUser = (token: string) => {
 export const postLink = (token: string, linkData: any) => {
   return async (dispatch: any) => {
     try {
-      let postLink = await axios.post('http://localhost:3001/links', linkData, {
+      let postLink = await axios.post(`${endpoint}/links`, linkData, {
         headers: {
           Authorization: 'Bearer ' + token,
         },
       })
       let { data } = await axios.post(
-        'http://localhost:3001/auth/register',
+        `${endpoint}/auth/register`,
         {},
         {
           headers: {
