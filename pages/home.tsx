@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { RootState } from '../src/store'
 import SimpleBottomNavigation from '../components/AppBar'
-import TemporaryDrawer from './ui/drawer'
+import TemporaryDrawer from '../components/drawer'
 import { useAppDispatch } from '../src/store/index'
 import { dataOfUser } from '../src/store/slices/firebase'
 
