@@ -10,12 +10,13 @@ import { useAppDispatch } from '../src/store/index'
 import { dataOfUser } from '../src/store/slices/firebase'
 
 import { auth } from '../src/config/firebase'
-import { onAuthStateChanged } from 'firebase/auth'
+import { confirmPasswordReset, onAuthStateChanged } from 'firebase/auth'
 import Link from 'next/link'
 
 export default function Home() {
   const token = useSelector((state: RootState) => state.firebaseSlice.token)
   const user = useSelector((state: RootState) => state.firebaseSlice.user)
+  const [displayName, setDisplayName] = React.useState<any>('')
   const links = user?.links
   const router = useRouter()
   const [state, setState] = React.useState({ bottom: false })
@@ -39,6 +40,8 @@ export default function Home() {
       if (user) {
         sessionStorage.setItem('accessToken', user['stsTokenManager']['accessToken'])
         dispatch(dataOfUser(user['accessToken']))
+        localStorage.setItem('displayName', user['displayName'])
+        setDisplayName(localStorage.getItem('displayName'))
       } else {
         router.push('/login')
       }
@@ -79,7 +82,7 @@ export default function Home() {
             margin: '20px',
           }}
         >
-          <b>{user?.user_name}</b>
+          <b>{user?.user_name ? user?.user_name : displayName}</b>
         </Typography>
 
         <Typography
@@ -120,14 +123,14 @@ export default function Home() {
           {Array.isArray(links) &&
             links.map((item: any) => (
               <div
-              key={item.link_name}
-              style={{
-                margin: '5px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-              }}
+                key={item.link_name}
+                style={{
+                  margin: '5px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                }}
               >
                 <Link href={`https://${item.link_url}`} target={'_blank'}>
                   <CardMedia

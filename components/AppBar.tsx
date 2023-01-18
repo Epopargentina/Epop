@@ -29,7 +29,7 @@ export default function SimpleBottomNavigation(props: Props) {
             <CardMedia
               component="img"
               image={props.image}
-              sx={{ width: "40px", borderRadius:50 }}
+              sx={{ width: "40px", borderRadius:50, height:"40px" }}
             />
           }
         />

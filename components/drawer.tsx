@@ -179,25 +179,25 @@ export default function TemporaryDrawer(props: Props) {
 
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder="Nombre"
+                  placeholder={user?.user_name}
                   className="input-drawer"
                   name="user_name"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder="Biografia"
+                  placeholder={user?.user_biography}
                   className="input-drawer"
                   name="user_biography"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder="Puesto de trabajo"
+                  placeholder={user?.user_job}
                   className="input-drawer"
                   name="user_job"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder="Empresa"
+                  placeholder={user?.company}
                   className="input-drawer"
                   name="company"
                   style={{ marginBottom: '20px' }}
@@ -220,7 +220,7 @@ export default function TemporaryDrawer(props: Props) {
                         backgroundColor: 'lightgrey',
                         borderRadius: '12px',
                         padding: '6px',
-                        width: '40%',
+                        width: '80%',
                         margin: '5px',
                         color: '#000',
                         fontFamily: 'Mulish',
@@ -249,7 +249,7 @@ export default function TemporaryDrawer(props: Props) {
                     backgroundColor: 'lightgrey',
                     borderRadius: '12px',
                     padding: '6px',
-                    width: '40%',
+                    width: '80%',
                     margin: '5px',
                     color: '#000',
                     fontFamily: 'Mulish',

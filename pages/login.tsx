@@ -101,6 +101,8 @@ export default function SignIn() {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
+          backgroundColor: '#19191a',
+          width: '100%',
         }}
       >
         <Container
@@ -110,6 +112,8 @@ export default function SignIn() {
             backgroundColor: '#EEEEEE',
             borderRadius: '16px',
             overflowY: 'hidden',
+            background: '#f5f5f5',
+            width:"80%"
           }}
         >
           <Box
@@ -123,7 +127,38 @@ export default function SignIn() {
               mb: 2,
             }}
           >
-            <Typography component="h1" variant="h5" sx={{ color: '#000', padding: '24px', fontFamily: 'Mulish' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '20px',
+                backgroundColor: '#19191a',
+                width: '30%',
+                height: '80px',
+                borderRadius: '10px',
+              }}
+            >
+              <CardMedia
+                component="img"
+                image="/logo.png"
+                sx={{ width: '80%', height: '50px', objectFit: 'contain' }}
+              />
+            </div>
+
+            <Typography
+              component="label"
+              sx={{
+                fontFamily: 'Mulish',
+                color: '#000',
+                fontWeight: 800,
+                fontSize: '28px',
+                width: '100%',
+                height: '60px',
+                textAlign: 'center',
+                padding: '24px',
+              }}
+            >
               Iniciar sesion
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -237,9 +272,9 @@ export default function SignIn() {
                 sx={{
                   width: '22px',
                   position: 'absolute',
-                  top: '22%',
+                  top: '20%',
                   right: '0%',
-                  left: '8%',
+                  left: '6%',
                   bottom: '0%',
                 }}
               />
