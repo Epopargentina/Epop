@@ -119,7 +119,7 @@ export default function TemporaryDrawer(props: Props) {
             borderTopLeftRadius: '8px',
           }}
         >
-          <Box sx={{ width: '100%' }} role="presentation">
+          <Box sx={{ width: '100%', height:'60vh' }} role="presentation">
             <List>
               <Typography
                 component="p"
@@ -261,8 +261,8 @@ export default function TemporaryDrawer(props: Props) {
                           width: '24px',
                           height: '24px',
                           marginRight: '4px',
-                          position:'absolute',
-                          left:'20px'
+                          position: 'absolute',
+                          left: '20px',
                         }}
                       />{' '}
                       {link.link_name}

@@ -95,12 +95,10 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
     }
     dispatch(postLink(token, input))
     handleClose()
-    // setState({ bottom: false })
   }
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
