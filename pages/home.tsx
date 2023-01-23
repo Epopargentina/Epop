@@ -8,7 +8,6 @@ import SimpleBottomNavigation from '../components/AppBar'
 import TemporaryDrawer from '../components/drawer'
 import { useAppDispatch } from '../src/store/index'
 import { dataOfUser } from '../src/store/slices/firebase'
-
 import { auth } from '../src/config/firebase'
 import { confirmPasswordReset, onAuthStateChanged } from 'firebase/auth'
 import Link from 'next/link'
@@ -80,6 +79,7 @@ export default function Home() {
             fontWeight: 600,
             fontSize: '32px',
             margin: '20px',
+            marginBottom: '4px',
           }}
         >
           <b>{user?.user_name ? user?.user_name : displayName}</b>
@@ -90,13 +90,29 @@ export default function Home() {
           sx={{
             fontFamily: 'Mulish',
             fontWeight: 600,
-            fontSize: '22px',
+            fontSize: '20px',
             color: 'grey',
             marginBottom: '20px',
           }}
         >
+          {user ? user.user_job : ''} at {user ? user.company : ''}
+        </Typography>
+
+        <Typography
+          component="p"
+          sx={{
+            fontFamily: 'Mulish',
+            fontWeight: 400,
+            fontSize: '18px',
+            color: 'darkgrey',
+            marginBottom: '20px',
+            width: '40%',
+            textAlign: 'center',
+          }}
+        >
           {user ? user.user_biography : ''}
         </Typography>
+
         <Button
           onClick={toggleDrawer('bottom', true)}
           variant="contained"

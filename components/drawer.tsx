@@ -11,6 +11,9 @@ import { updateProfile } from '../src/store/slices/firebase'
 import BasicModal from './modalLink'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import { dataOfUser } from '../src/store/slices/firebase'
+import { auth } from '../src/config/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
 
 interface Props {
   setState: any
@@ -20,12 +23,16 @@ interface Props {
 }
 
 export default function TemporaryDrawer(props: Props) {
-  const [open, setOpen] = React.useState(false)
   const user = useSelector((state: RootState) => state.firebaseSlice.user)
+  const [open, setOpen] = React.useState(false)
   const [token, setToken] = React.useState<any>('')
   const [photo, setPhoto] = React.useState(props.photo)
-
-  const [input, setInput] = React.useState({})
+  const [input, setInput] = React.useState({
+    user_name: user?.user_name ? user?.user_name : '',
+    user_biography: user?.user_biography ? user?.user_biography : '',
+    user_job: user?.user_job ? user?.user_job : '',
+    company: user?.company ? user?.company : '',
+  })
   const dispatch = useAppDispatch()
   const [previewSource, setPreviewSource] = React.useState<any>('')
   const [image, setImage] = React.useState({
@@ -36,6 +43,14 @@ export default function TemporaryDrawer(props: Props) {
 
   React.useEffect(() => {
     setToken(sessionStorage.getItem('accessToken'))
+  }, [])
+
+  React.useEffect(() => {
+    onAuthStateChanged(auth, function (user: any) {
+      if (user) {
+        dispatch(dataOfUser(user['accessToken']))
+      }
+    })
   }, [])
 
   function handleImage(e: any) {
@@ -78,7 +93,12 @@ export default function TemporaryDrawer(props: Props) {
         location.reload()
         setLoading(false)
       }
-      setInput({})
+      setInput({
+        user_name: user?.user_name ? user?.user_name : '',
+        user_biography: user?.user_biography ? user?.user_biography : '',
+        user_job: user?.user_job ? user?.user_job : '',
+        company: user?.company ? user?.company : '',
+      })
       props.setState({ bottom: false })
     } catch (error) {
       console.log(error)
@@ -181,23 +201,27 @@ export default function TemporaryDrawer(props: Props) {
                   onChange={(e: any) => handleChange(e)}
                   placeholder={user?.user_name}
                   className="input-drawer"
+                  value={input.user_name}
                   name="user_name"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
                   placeholder={user?.user_biography}
                   className="input-drawer"
+                  value={input.user_biography}
                   name="user_biography"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
                   placeholder={user?.user_job}
+                  value={input.user_job}
                   className="input-drawer"
                   name="user_job"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
                   placeholder={user?.company}
+                  value={input.company}
                   className="input-drawer"
                   name="company"
                   style={{ marginBottom: '20px' }}
@@ -237,6 +261,8 @@ export default function TemporaryDrawer(props: Props) {
                           width: '24px',
                           height: '24px',
                           marginRight: '4px',
+                          position:'absolute',
+                          left:'20px'
                         }}
                       />{' '}
                       {link.link_name}

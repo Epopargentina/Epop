@@ -14,7 +14,6 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   borderRadius: '10px',
@@ -96,7 +95,7 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
     }
     dispatch(postLink(token, input))
     handleClose()
-    setState({ bottom: false })
+    // setState({ bottom: false })
   }
 
   return (
@@ -109,17 +108,31 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <button
+            onClick={handleClose}
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '14px',
+              borderRadius: '10px',
+              border: 'none',
+              padding: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            X
+          </button>
           <label
             style={{
               display: 'block',
-              marginBottom: '15px',
+              marginBottom: '10px',
               fontFamily: 'Mulish',
               fontWeight: 800,
             }}
           >
-            Agregar link
+            Agregar enlace
           </label>
-          <Divider />
+          <Divider sx={{ marginBottom: '30px' }} />
           <Box
             sx={{
               display: 'flex',
@@ -152,7 +165,7 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
               onChange={(e: any) => handleChange(e)}
               name="link_name"
               style={{
-                width: '60%',
+                width: '100%',
                 height: '48px',
                 border: '2px solid #d9d9d9',
                 fontFamily: 'Mulish',
@@ -161,7 +174,7 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
                 marginTop: '15px',
               }}
             >
-              <option>Selecciona una opcion</option>
+              <option>Selecciona una opción</option>
               {Array.isArray(linksPerDefault) &&
                 linksPerDefault.map((item: any) => (
                   <option key={item.name} value={item.name}>
@@ -172,9 +185,9 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
             <input
               onChange={(e: any) => handleChange(e)}
               name="link_name"
-              placeholder="Titulo del enlace (opcional)"
+              placeholder="(opcional) Titulo del enlace"
               style={{
-                width: '60%',
+                width: '100%',
                 height: '48px',
                 border: '2px solid #d9d9d9',
                 fontFamily: 'Mulish',
@@ -186,9 +199,9 @@ export default function BasicModal({ open, setOpen, setState }: Props) {
             <input
               onChange={(e: any) => handleChange(e)}
               name="link_url"
-              placeholder="Link"
+              placeholder="Enlace"
               style={{
-                width: '60%',
+                width: '100%',
                 height: '48px',
                 border: '2px solid #d9d9d9',
                 fontFamily: 'Mulish',
