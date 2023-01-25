@@ -113,7 +113,7 @@ export default function SignIn() {
             borderRadius: '16px',
             overflowY: 'hidden',
             background: '#f5f5f5',
-            width:"80%"
+            width: '80%',
           }}
         >
           <Box
@@ -163,6 +163,7 @@ export default function SignIn() {
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
+                disabled
                 margin="normal"
                 required
                 fullWidth
@@ -173,6 +174,7 @@ export default function SignIn() {
                 autoFocus
               />
               <TextField
+                disabled
                 margin="normal"
                 required
                 fullWidth
@@ -223,19 +225,6 @@ export default function SignIn() {
                     }}
                   >
                     Olvidaste tu contraseña?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link
-                    href="#"
-                    variant="body2"
-                    sx={{
-                      textDecoration: 'none',
-                      color: '#000',
-                      '&:hover': { color: '#00A6CB' },
-                    }}
-                  >
-                    {'No tienes una cuenta? Registrate'}
                   </Link>
                 </Grid>
               </Grid>

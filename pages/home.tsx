@@ -48,7 +48,7 @@ export default function Home() {
   }, [])
 
   return (
-    <Box component="div">
+    <Box component="div" sx={{ overflowX: 'hidden' }}>
       <div
         style={{
           display: 'flex',
@@ -106,7 +106,7 @@ export default function Home() {
             fontSize: '18px',
             color: 'darkgrey',
             marginBottom: '20px',
-            width: '40%',
+            width: '60%',
             textAlign: 'center',
           }}
         >

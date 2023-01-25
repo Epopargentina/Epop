@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { dataOfUser } from '../src/store/slices/firebase'
 import { auth } from '../src/config/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
+import ModalPhoto from './ModalPhoto'
 
 interface Props {
   setState: any
@@ -24,6 +25,7 @@ interface Props {
 
 export default function TemporaryDrawer(props: Props) {
   const user = useSelector((state: RootState) => state.firebaseSlice.user)
+  const [modalPhoto, setModalPhoto] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const [token, setToken] = React.useState<any>('')
   const [photo, setPhoto] = React.useState(props.photo)
@@ -119,7 +121,7 @@ export default function TemporaryDrawer(props: Props) {
             borderTopLeftRadius: '8px',
           }}
         >
-          <Box sx={{ width: '100%', height:'60vh' }} role="presentation">
+          <Box sx={{ width: '100%', height: '60vh' }} role="presentation">
             <List>
               <Typography
                 component="p"
@@ -142,71 +144,32 @@ export default function TemporaryDrawer(props: Props) {
                 }}
               >
                 <CardMedia
+                  onClick={() => setModalPhoto(true)}
                   component="img"
                   image={previewSource ? previewSource : user?.user_image}
-                  sx={{ width: '120px', height: '120px', borderRadius: '50%', marginY: '10px' }}
+                  sx={{ width: '120px', height: '120px', borderRadius: '50%', marginY: '10px', cursor: 'pointer' }}
                 />
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'normal',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    gap: '40px',
-                    marginBottom: '10px',
-                  }}
-                >
-                  <label
-                    htmlFor="upload-photo"
-                    style={{
-                      cursor: 'pointer',
-                      backgroundColor: '#000',
-                      color: '#fff',
-                      textAlign: 'center',
-                      // width: '120px',
+                <div>
+                  <EditIcon
+                    color="inherit"
+                    sx={{
+                      position: 'relative',
+                      top: '-40px',
+                      left: '50px',
                       borderRadius: '10px',
-                      padding: '10px',
-                      fontFamily: 'Mulish',
-                      height: '45px',
                     }}
-                  >
-                    <EditIcon />
-                  </label>
-                  <button
-                    style={{
-                      backgroundColor: '#FDCFDA',
-                      border: '1px solid #B4042B',
-                      fontFamily: 'Mulish',
-                      padding: '10px',
-                      borderRadius: '10px',
-                      height: '45px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <DeleteIcon />
-                  </button>
+                  />
                 </div>
                 <input
-                  type="file"
-                  id="upload-photo"
-                  name="user_image"
-                  placeholder="Imagen"
-                  value={image.imageName}
-                  onChange={(e: any) => handleImage(e)}
-                  style={{ opacity: 0, position: 'absolute', zIndex: -1 }}
-                ></input>
-
-                <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.user_name}
+                  placeholder={user?.user_name === '' ? 'Nombre' : user?.user_name}
                   className="input-drawer"
                   value={input.user_name}
                   name="user_name"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.user_biography}
+                  placeholder={user?.user_biography === 'Biografia' ? '' : user?.user_biography}
                   className="input-drawer"
                   value={input.user_biography}
                   name="user_biography"
@@ -220,7 +183,7 @@ export default function TemporaryDrawer(props: Props) {
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.company}
+                  placeholder={user?.company === '' ? 'Empresa' : user?.company}
                   value={input.company}
                   className="input-drawer"
                   name="company"
@@ -297,11 +260,13 @@ export default function TemporaryDrawer(props: Props) {
                   },
                   marginTop: '5px',
                   borderRadius: 0,
+                  marginBottom: 0,
                 }}
               >
                 Guardar perfil
               </Button>
               {open && <BasicModal open={open} setOpen={setOpen} setState={props.setState} />}
+              {modalPhoto && <ModalPhoto open={modalPhoto} setOpen={setModalPhoto} />}
             </List>
           </Box>
         </Drawer>
