@@ -134,6 +134,7 @@ export default function Home() {
             maxWidth: '100%',
             alignItems: 'baseline',
             justifyContent: 'center',
+            marginBottom: '20px',
           }}
         >
           {Array.isArray(links) &&
@@ -179,7 +180,7 @@ export default function Home() {
         photo={user?.user_image}
         toggleDrawer={toggleDrawer}
       />
-        <SimpleBottomNavigation image={user?.user_image} />
+      <SimpleBottomNavigation image={user?.user_image} />
     </Box>
   )
 }
