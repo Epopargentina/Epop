@@ -135,6 +135,7 @@ export default function Home() {
             alignItems: 'baseline',
             justifyContent: 'center',
             marginBottom: '20px',
+            minHeight: '50%',
           }}
         >
           {Array.isArray(links) &&
