@@ -179,9 +179,7 @@ export default function Home() {
         photo={user?.user_image}
         toggleDrawer={toggleDrawer}
       />
-      <Box sx={{ position: 'absolute', bottom: 0, left: 50, right: 50 }}>
         <SimpleBottomNavigation image={user?.user_image} />
-      </Box>
     </Box>
   )
 }
