@@ -48,7 +48,17 @@ export default function Home() {
   }, [])
 
   return (
-    <Box component="div" sx={{ overflowX: 'hidden', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box
+      component="div"
+      sx={{
+        overflowX: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        paddingBottom: '30px',
+        paddingTop: '30px',
+      }}
+    >
       <div
         style={{
           display: 'flex',
@@ -135,7 +145,6 @@ export default function Home() {
             alignItems: 'baseline',
             justifyContent: 'center',
             marginBottom: '20px',
-            minHeight: '50%',
           }}
         >
           {Array.isArray(links) &&
