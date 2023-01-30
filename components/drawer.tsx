@@ -103,6 +103,7 @@ export default function TemporaryDrawer(props: Props) {
         user_job: user?.user_job ? user?.user_job : '',
         company: user?.company ? user?.company : '',
       })
+      setText('Actualizar perfil')
       props.setState({ bottom: false })
     } catch (error) {
       console.log(error)
