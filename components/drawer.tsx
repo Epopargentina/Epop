@@ -42,6 +42,7 @@ export default function TemporaryDrawer(props: Props) {
     user_image: '',
   })
   const [loading, setLoading] = React.useState(false)
+  const [textOfProfile, setText] = React.useState('Actualizar perfil')
 
   React.useEffect(() => {
     setToken(sessionStorage.getItem('accessToken'))
@@ -87,6 +88,7 @@ export default function TemporaryDrawer(props: Props) {
       return alert('Modifica algun campo para modificar')
     }
     try {
+      setText('Cargando...')
       if (previewSource === '') {
         await dispatch(updateProfile(token, input, previewSource))
       } else {
@@ -203,7 +205,7 @@ export default function TemporaryDrawer(props: Props) {
                     marginBottom: '20px',
                   }}
                 >
-                  Actualizar perfil
+                  {textOfProfile}
                 </Button>
                 <Typography
                   component="p"
