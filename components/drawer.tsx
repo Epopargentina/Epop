@@ -162,33 +162,49 @@ export default function TemporaryDrawer(props: Props) {
                 </div>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.user_name === '' ? 'Nombre' : user?.user_name}
+                  placeholder={'Nombre'}
                   className="input-drawer"
                   value={input.user_name}
                   name="user_name"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.user_biography === 'Biografia' ? '' : user?.user_biography}
+                  placeholder={'Biografia'}
                   className="input-drawer"
                   value={input.user_biography}
                   name="user_biography"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.user_job}
+                  placeholder={'Puesto de trabajo'}
                   value={input.user_job}
                   className="input-drawer"
                   name="user_job"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={user?.company === '' ? 'Empresa' : user?.company}
+                  placeholder={'Empresa'}
                   value={input.company}
                   className="input-drawer"
                   name="company"
                   style={{ marginBottom: '20px' }}
                 ></input>
+                <Button
+                  onClick={saveProfile}
+                  sx={{
+                    width: '80%',
+                    backgroundColor: '#000',
+                    color: '#FFF',
+                    fontFamily: 'Mulish',
+                    '&:hover': {
+                      backgroundColor: '#000',
+                    },
+                    borderRadius: '10px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  Actualizar perfil
+                </Button>
                 <Typography
                   component="p"
                   sx={{
@@ -248,23 +264,7 @@ export default function TemporaryDrawer(props: Props) {
                   + Agregar nuevo enlace
                 </Button>
               </Box>
-              <Button
-                onClick={saveProfile}
-                fullWidth
-                sx={{
-                  backgroundColor: '#000',
-                  color: '#FFF',
-                  fontFamily: 'Mulish',
-                  '&:hover': {
-                    backgroundColor: '#000',
-                  },
-                  marginTop: '5px',
-                  borderRadius: 0,
-                  marginBottom: 0,
-                }}
-              >
-                Guardar perfil
-              </Button>
+
               {open && <BasicModal open={open} setOpen={setOpen} setState={props.setState} />}
               {modalPhoto && <ModalPhoto open={modalPhoto} setOpen={setModalPhoto} />}
             </List>
