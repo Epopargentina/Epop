@@ -17,9 +17,23 @@ const Post = () => {
 
   React.useEffect(() => {
     dispatch(findByUserName(String(userId))).then(result => {
-      console.log(userInvite)
+      updatePage()
     })
-  }, [])
+  }, [userId])
+
+  async function updatePage() {
+    console.log('')
+  }
+
+  React.useEffect(() => {}, [userInvite])
+
+  if (userInvite === '' || userInvite === null) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <label style={{ fontFamily: 'Mulish', fontSize: '18px', fontWeight: 800 }}>Cargando...</label>
+      </div>
+    )
+  }
 
   return (
     <Box
