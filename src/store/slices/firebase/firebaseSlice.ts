@@ -1,13 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { auth } from "../../../config/firebase";
-import { signOut, sendPasswordResetEmail } from "firebase/auth";
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { auth } from '../../../config/firebase'
+import { signOut, sendPasswordResetEmail } from 'firebase/auth'
 
 export interface CounterState {
-  user: any;
-  token: any;
-  loading: boolean;
-  error: any;
+  user: any
+  token: any
+  loading: boolean
+  error: any
+  inviteUser: any
 }
 
 const initialState: CounterState = {
@@ -15,38 +16,41 @@ const initialState: CounterState = {
   token: null,
   loading: true,
   error: [],
-};
+  inviteUser: null,
+}
 
 //SLICE
 export const firebaseSlice = createSlice({
-  name: "counter",
+  name: 'counter',
   initialState,
   reducers: {
     loginWithGoogle: (state, action: PayloadAction<any>) => {
-      state.user = action.payload.data;
-      state.token = action.payload.token;
+      state.user = action.payload.data
+      state.token = action.payload.token
     },
 
-    logOut: (state) => {
+    logOut: state => {
       signOut(auth).then(() => {
-        state.user = null;
-        state.token = null;
-      });
+        state.user = null
+        state.token = null
+      })
     },
     recoverPassword: (state, action: PayloadAction<string>) => {
-      sendPasswordResetEmail(auth, action.payload);
+      sendPasswordResetEmail(auth, action.payload)
     },
     updateUser: (state, action: PayloadAction<any>) => {
-      state.user = action.payload.updatedUser;
+      state.user = action.payload.updatedUser
     },
     dataUser: (state, action: PayloadAction<any>) => {
-      state.user = action.payload;
+      state.user = action.payload
+    },
+    findUserInvite: (state, action: PayloadAction<any>) => {
+      state.inviteUser = action.payload.userAccount
     },
   },
-});
+})
 
 // Action creators are generated for each case reducer function
-export const { loginWithGoogle, logOut, updateUser, dataUser } =
-  firebaseSlice.actions;
+export const { loginWithGoogle, logOut, updateUser, dataUser, findUserInvite } = firebaseSlice.actions
 
-export default firebaseSlice;
+export default firebaseSlice

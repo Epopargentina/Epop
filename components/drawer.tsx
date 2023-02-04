@@ -165,28 +165,28 @@ export default function TemporaryDrawer(props: Props) {
                 </div>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={'Nombre'}
+                  placeholder={user?.user_name === '' ? 'Nombre' : user?.user_name}
                   className="input-drawer"
                   value={input.user_name}
                   name="user_name"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={'Biografia'}
+                  placeholder={user?.user_biography === '' ? 'Biografia' : user?.user_biography}
                   className="input-drawer"
                   value={input.user_biography}
                   name="user_biography"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={'Puesto de trabajo'}
+                  placeholder={user?.user_job === '' ? 'Puesto de trabajo' : user?.user_job}
                   value={input.user_job}
                   className="input-drawer"
                   name="user_job"
                 ></input>
                 <input
                   onChange={(e: any) => handleChange(e)}
-                  placeholder={'Empresa'}
+                  placeholder={user?.company === '' ? 'Empresa' : user?.company}
                   value={input.company}
                   className="input-drawer"
                   name="company"

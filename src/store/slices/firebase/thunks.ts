@@ -1,4 +1,4 @@
-import { dataUser, loginWithGoogle, updateUser } from './firebaseSlice'
+import { dataUser, findUserInvite, loginWithGoogle, updateUser } from './firebaseSlice'
 import { auth, googleAuthProvider } from '../../../config/firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import axios from 'axios'
@@ -26,6 +26,14 @@ export const loginWithGoogleThunk = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+}
+
+export const findByUserName = (user_name: string) => {
+  return async (dispatch: any) => {
+    let userAccount = await axios.get(`${endpoint}/user/${user_name}`)
+    userAccount = userAccount.data
+    dispatch(findUserInvite({ userAccount }))
   }
 }
 
